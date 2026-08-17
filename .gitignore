@@ -1,0 +1,10 @@
+webinar-implementation-plan.md
+
+__pycache__/
+*.pyc
+.pytest_cache/
+*.db
+.venv/
+venv/
+
+.idea
