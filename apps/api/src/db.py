@@ -1,8 +1,9 @@
+import os
 import sqlite3
 from pathlib import Path
 from typing import Iterator
 
-DB_PATH = Path(__file__).resolve().parent.parent / "app.db"
+DB_PATH = Path(os.environ.get("APP_DB_PATH", Path(__file__).resolve().parent.parent / "app.db"))
 
 SCHEMA = """
 create table if not exists users (
