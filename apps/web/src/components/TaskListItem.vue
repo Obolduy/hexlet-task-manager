@@ -1,11 +1,15 @@
 <script setup lang="ts">
+import { computed } from 'vue'
 import type { Task } from '../api/types'
+import { formatRelativeTime } from '../utils/relativeTime'
 import StatusBadge from './StatusBadge.vue'
 
-defineProps<{
+const props = defineProps<{
   task: Task
   assigneeName: string | null
 }>()
+
+const createdLabel = computed(() => formatRelativeTime(props.task.createdAt))
 </script>
 
 <template>
@@ -16,6 +20,7 @@ defineProps<{
     </div>
     <p v-if="task.description" class="task-item__description">{{ task.description }}</p>
     <p class="task-item__assignee">{{ assigneeName ?? 'Без исполнителя' }}</p>
+    <p class="task-item__created" :title="task.createdAt">{{ createdLabel }}</p>
   </li>
 </template>
 
@@ -41,5 +46,10 @@ defineProps<{
   margin: 0;
   font-size: 0.85rem;
   color: #777;
+}
+.task-item__created {
+  margin: 0.2rem 0 0;
+  font-size: 0.8rem;
+  color: #999;
 }
 </style>
