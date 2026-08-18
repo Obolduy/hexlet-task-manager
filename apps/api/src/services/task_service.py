@@ -29,6 +29,7 @@ def create_task(
 
 
 def get_task(conn: sqlite3.Connection, task_id: int) -> dict:
+    print('task_model.get_task(conn, task_id)')
     task = task_model.get_task(conn, task_id)
     if task is None:
         raise TaskNotFound(task_id)
