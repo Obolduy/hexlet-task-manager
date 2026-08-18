@@ -20,4 +20,4 @@ jobs:
         with:
           api-key: ${{ secrets.OPENROUTER_API_KEY }}
           search-url: http://localhost:8000
-          model: <модель>
+          model: anthropic/claude-sonnet-4.5
