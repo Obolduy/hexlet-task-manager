@@ -7,8 +7,24 @@ def _now() -> str:
     return datetime.now(timezone.utc).isoformat()
 
 
-def list_tasks(conn: sqlite3.Connection) -> list[dict]:
-    rows = conn.execute("select * from tasks order by id").fetchall()
+def list_tasks(
+    conn: sqlite3.Connection,
+    status: Optional[str] = None,
+    assignee_id: Optional[int] = None,
+) -> list[dict]:
+    query = "select * from tasks"
+    conditions = []
+    params: list = []
+    if status is not None:
+        conditions.append("status = ?")
+        params.append(status)
+    if assignee_id is not None:
+        conditions.append("assignee_id = ?")
+        params.append(assignee_id)
+    if conditions:
+        query += " where " + " and ".join(conditions)
+    query += " order by id"
+    rows = conn.execute(query, params).fetchall()
     return [dict(row) for row in rows]
 
 
