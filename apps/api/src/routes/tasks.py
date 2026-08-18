@@ -1,15 +1,25 @@
+from typing import Optional
+
 from fastapi import APIRouter, Depends, HTTPException
 
 from src.db import get_db
-from src.schemas import TaskCreate, TaskOut, TaskStatusUpdate
+from src.schemas import TaskCreate, TaskOut, TaskStatus, TaskStatusUpdate
 from src.services import task_service
 
 router = APIRouter(prefix="/tasks", tags=["tasks"])
 
 
 @router.get("", response_model=list[TaskOut])
-def list_tasks(conn=Depends(get_db)):
-    return task_service.list_tasks(conn)
+def list_tasks(
+    status: Optional[TaskStatus] = None,
+    assignee_id: Optional[int] = None,
+    conn=Depends(get_db),
+):
+    return task_service.list_tasks(
+        conn,
+        status=status.value if status else None,
+        assignee_id=assignee_id,
+    )
 
 
 @router.post("", response_model=TaskOut, status_code=201)

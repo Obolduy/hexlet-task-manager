@@ -7,6 +7,55 @@ def test_list_tasks_returns_seeded_count(client):
     assert len(response.json()) == 50
 
 
+def test_list_tasks_filtered_by_status_returns_only_matching(client):
+    response = client.get("/tasks", params={"status": "done"})
+
+    assert response.status_code == 200
+    body = response.json()
+    assert len(body) > 0
+    assert all(task["status"] == "done" for task in body)
+
+
+def test_list_tasks_filtered_by_assignee_returns_only_matching(client):
+    all_tasks = client.get("/tasks").json()
+    assignee_id = next(task["assignee_id"] for task in all_tasks if task["assignee_id"] is not None)
+
+    response = client.get("/tasks", params={"assignee_id": assignee_id})
+
+    assert response.status_code == 200
+    body = response.json()
+    assert len(body) > 0
+    assert all(task["assignee_id"] == assignee_id for task in body)
+
+
+def test_list_tasks_filtered_by_status_and_assignee_combined(client):
+    all_tasks = client.get("/tasks").json()
+    assignee_id = next(task["assignee_id"] for task in all_tasks if task["assignee_id"] is not None)
+    expected = {
+        task["id"]
+        for task in all_tasks
+        if task["assignee_id"] == assignee_id and task["status"] == "new"
+    }
+
+    response = client.get("/tasks", params={"assignee_id": assignee_id, "status": "new"})
+
+    assert response.status_code == 200
+    body = response.json()
+    assert {task["id"] for task in body} == expected
+
+
+def test_list_tasks_filtered_by_invalid_status_is_rejected(client):
+    response = client.get("/tasks", params={"status": "archived"})
+    assert response.status_code == 422
+
+
+def test_list_tasks_filtered_by_unknown_assignee_returns_empty_list(client):
+    response = client.get("/tasks", params={"assignee_id": 9999})
+
+    assert response.status_code == 200
+    assert response.json() == []
+
+
 def test_create_task_success(client):
     response = client.post(
         "/tasks",

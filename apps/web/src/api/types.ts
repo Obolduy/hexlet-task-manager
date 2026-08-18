@@ -15,3 +15,8 @@ export interface User {
   name: string
   email: string
 }
+
+export interface TaskFilters {
+  status: TaskStatus | null
+  assigneeId: number | null
+}

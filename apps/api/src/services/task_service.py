@@ -13,8 +13,12 @@ class AssigneeNotFound(Exception):
     pass
 
 
-def list_tasks(conn: sqlite3.Connection) -> list[dict]:
-    return task_model.list_tasks(conn)
+def list_tasks(
+    conn: sqlite3.Connection,
+    status: Optional[str] = None,
+    assignee_id: Optional[int] = None,
+) -> list[dict]:
+    return task_model.list_tasks(conn, status=status, assignee_id=assignee_id)
 
 
 def create_task(
