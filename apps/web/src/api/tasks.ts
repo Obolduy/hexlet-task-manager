@@ -32,3 +32,21 @@ export async function fetchTasks(): Promise<Task[]> {
   const raw: TaskApiResponse[] = await response.json()
   return raw.map(mapTask)
 }
+
+export class TaskFetchError extends Error {
+  status: number
+
+  constructor(status: number) {
+    super(`Failed to load task: ${status}`)
+    this.status = status
+  }
+}
+
+export async function fetchTask(id: number): Promise<Task> {
+  const response = await fetch(`${API_BASE}/tasks/${id}`)
+  if (!response.ok) {
+    throw new TaskFetchError(response.status)
+  }
+  const raw: TaskApiResponse = await response.json()
+  return mapTask(raw)
+}
