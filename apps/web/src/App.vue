@@ -1,11 +1,10 @@
 <script setup lang="ts">
-import TaskScreen from './components/TaskScreen.vue'
 </script>
 
 <template>
   <main class="app">
     <h1>Задачи</h1>
-    <TaskScreen />
+    <RouterView />
   </main>
 </template>
 
