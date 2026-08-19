@@ -2,10 +2,17 @@
 import type { Task } from '../api/types'
 import StatusBadge from './StatusBadge.vue'
 
-defineProps<{
+const props = defineProps<{
   task: Task
   assigneeName: string | null
+  isCompleting: boolean
 }>()
+
+const emit = defineEmits<{ complete: [taskId: number] }>()
+
+function handleComplete() {
+  emit('complete', props.task.id)
+}
 </script>
 
 <template>
@@ -13,6 +20,15 @@ defineProps<{
     <div class="task-item__header">
       <span class="task-item__title">{{ task.title }}</span>
       <StatusBadge :status="task.status" />
+      <button
+        v-if="task.status !== 'done'"
+        type="button"
+        class="task-item__complete"
+        :disabled="isCompleting"
+        @click="handleComplete"
+      >
+        Завершить
+      </button>
     </div>
     <p v-if="task.description" class="task-item__description">{{ task.description }}</p>
     <p class="task-item__assignee">{{ assigneeName ?? 'Без исполнителя' }}</p>

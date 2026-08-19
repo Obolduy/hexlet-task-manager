@@ -54,6 +54,18 @@ def test_update_task_status_success(client):
     assert body["updated_at"] != created["updated_at"]
 
 
+def test_update_task_status_to_done_success(client):
+    created = client.post("/tasks", json={"title": "Задача на завершение"}).json()
+    assert created["status"] == "new"
+
+    response = client.patch(f"/tasks/{created['id']}/status", json={"status": "done"})
+
+    assert response.status_code == 200
+    body = response.json()
+    assert body["status"] == "done"
+    assert body["updated_at"] != created["updated_at"]
+
+
 def test_update_task_status_invalid_value_is_rejected(client):
     response = client.patch("/tasks/1/status", json={"status": "archived"})
     assert response.status_code == 422

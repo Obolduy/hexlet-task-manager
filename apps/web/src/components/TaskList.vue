@@ -5,7 +5,10 @@ import TaskListItem from './TaskListItem.vue'
 const props = defineProps<{
   tasks: Task[]
   assigneeNameById: Record<number, string>
+  completingTaskId: number | null
 }>()
+
+defineEmits<{ complete: [taskId: number] }>()
 
 function assigneeName(task: Task): string | null {
   return task.assigneeId === null ? null : props.assigneeNameById[task.assigneeId] ?? null
@@ -20,6 +23,8 @@ function assigneeName(task: Task): string | null {
       :key="task.id"
       :task="task"
       :assignee-name="assigneeName(task)"
+      :is-completing="task.id === completingTaskId"
+      @complete="$emit('complete', $event)"
     />
   </ul>
 </template>
