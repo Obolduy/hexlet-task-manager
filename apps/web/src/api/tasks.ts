@@ -24,6 +24,8 @@ function mapTask(raw: TaskApiResponse): Task {
   }
 }
 
+export class TaskNotFoundError extends Error {}
+
 export async function fetchTasks(): Promise<Task[]> {
   const response = await fetch(`${API_BASE}/tasks`)
   if (!response.ok) {
@@ -31,4 +33,16 @@ export async function fetchTasks(): Promise<Task[]> {
   }
   const raw: TaskApiResponse[] = await response.json()
   return raw.map(mapTask)
+}
+
+export async function fetchTask(id: number): Promise<Task> {
+  const response = await fetch(`${API_BASE}/tasks/${id}`)
+  if (response.status === 404) {
+    throw new TaskNotFoundError(`Task ${id} not found`)
+  }
+  if (!response.ok) {
+    throw new Error(`Failed to load task: ${response.status}`)
+  }
+  const raw: TaskApiResponse = await response.json()
+  return mapTask(raw)
 }

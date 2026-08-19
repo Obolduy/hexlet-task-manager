@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type { Task } from '../api/types'
 import StatusBadge from './StatusBadge.vue'
+import { onLinkClick } from '../router'
 
 defineProps<{
   task: Task
@@ -11,7 +12,11 @@ defineProps<{
 <template>
   <li class="task-item">
     <div class="task-item__header">
-      <span class="task-item__title">{{ task.title }}</span>
+      <a
+        class="task-item__title"
+        :href="`/tasks/${task.id}`"
+        @click="onLinkClick($event, `/tasks/${task.id}`)"
+      >{{ task.title }}</a>
       <StatusBadge :status="task.status" />
     </div>
     <p v-if="task.description" class="task-item__description">{{ task.description }}</p>
@@ -32,6 +37,11 @@ defineProps<{
 }
 .task-item__title {
   font-weight: 600;
+  color: inherit;
+  text-decoration: none;
+}
+.task-item__title:hover {
+  text-decoration: underline;
 }
 .task-item__description {
   margin: 0.35rem 0;

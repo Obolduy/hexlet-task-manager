@@ -28,6 +28,7 @@ onMounted(async () => {
 </script>
 
 <template>
+  <h1>Задачи</h1>
   <p v-if="isLoading">Загрузка…</p>
   <p v-else-if="error">{{ error }}</p>
   <TaskList v-else :tasks="tasks" :assignee-name-by-id="assigneeNameById" />
