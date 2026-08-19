@@ -1,8 +1,10 @@
 import { describe, expect, it } from 'vitest'
-import { mount } from '@vue/test-utils'
+import { mount, RouterLinkStub } from '@vue/test-utils'
 import TaskList from '../src/components/TaskList.vue'
 import TaskListItem from '../src/components/TaskListItem.vue'
 import type { Task } from '../src/api/types'
+
+const globalStubs = { stubs: { RouterLink: RouterLinkStub } }
 
 function makeTask(overrides: Partial<Task> = {}): Task {
   return {
@@ -22,6 +24,7 @@ describe('TaskList', () => {
     const tasks = [makeTask({ id: 1 }), makeTask({ id: 2 }), makeTask({ id: 3 })]
     const wrapper = mount(TaskList, {
       props: { tasks, assigneeNameById: {} },
+      global: globalStubs,
     })
 
     expect(wrapper.findAllComponents(TaskListItem)).toHaveLength(3)
@@ -30,6 +33,7 @@ describe('TaskList', () => {
   it('renders empty state and no items when tasks is empty', () => {
     const wrapper = mount(TaskList, {
       props: { tasks: [], assigneeNameById: {} },
+      global: globalStubs,
     })
 
     expect(wrapper.text()).toContain('Задач нет')
