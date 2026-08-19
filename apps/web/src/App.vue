@@ -1,11 +1,13 @@
 <script setup lang="ts">
 import TaskScreen from './components/TaskScreen.vue'
+import TaskDetailScreen from './components/TaskDetailScreen.vue'
+import { currentRoute } from './router'
 </script>
 
 <template>
   <main class="app">
-    <h1>Задачи</h1>
-    <TaskScreen />
+    <TaskScreen v-if="currentRoute.name === 'list'" />
+    <TaskDetailScreen v-else :id="currentRoute.id" />
   </main>
 </template>
 
