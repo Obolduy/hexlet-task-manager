@@ -28,7 +28,16 @@ onMounted(async () => {
 </script>
 
 <template>
-  <p v-if="isLoading">Загрузка…</p>
-  <p v-else-if="error">{{ error }}</p>
+  <p v-if="isLoading" class="task-screen__status">Загрузка…</p>
+  <p v-else-if="error" class="task-screen__status task-screen__status--error">{{ error }}</p>
   <TaskList v-else :tasks="tasks" :assignee-name-by-id="assigneeNameById" />
 </template>
+
+<style scoped>
+.task-screen__status {
+  color: var(--ink-soft);
+}
+.task-screen__status--error {
+  color: var(--review-fg);
+}
+</style>

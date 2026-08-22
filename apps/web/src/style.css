@@ -1,10 +1,32 @@
 :root {
   color-scheme: light;
-  font-family: system-ui, sans-serif;
+  font-family: -apple-system, 'Segoe UI', system-ui, sans-serif;
+
+  --paper: #f6f3ee;
+  --surface: #fffefc;
+  --ink: #221e19;
+  --ink-soft: #6d6459;
+  --line: #e3dccc;
+  --accent: #a8461f;
+
+  --new-bg: #eaeff2;
+  --new-fg: #46586a;
+  --progress-bg: #fbf1de;
+  --progress-fg: #93650f;
+  --review-bg: #f5ecf2;
+  --review-fg: #874d70;
+  --done-bg: #e9f1e9;
+  --done-fg: #3f6b43;
+}
+
+* {
+  box-sizing: border-box;
 }
 
 body {
   margin: 0;
-  color: #1a1a1a;
-  background: #fafafa;
+  color: var(--ink);
+  background: var(--paper);
+  font-size: 15px;
+  line-height: 1.5;
 }

@@ -19,10 +19,30 @@ const labels: Record<TaskStatus, string> = {
 
 <style scoped>
 .status-badge {
-  display: inline-block;
-  padding: 0.15rem 0.5rem;
-  border-radius: 4px;
-  font-size: 0.85rem;
-  background: #e5e5e5;
+  display: inline-flex;
+  align-items: center;
+  padding: 0.2rem 0.6rem;
+  border-radius: 3px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+.status-badge--new {
+  background: var(--new-bg);
+  color: var(--new-fg);
+}
+.status-badge--in_progress {
+  background: var(--progress-bg);
+  color: var(--progress-fg);
+}
+.status-badge--in_review {
+  background: var(--review-bg);
+  color: var(--review-fg);
+}
+.status-badge--done {
+  background: var(--done-bg);
+  color: var(--done-fg);
 }
 </style>
